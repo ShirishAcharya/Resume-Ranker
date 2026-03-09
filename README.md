@@ -18,7 +18,7 @@ AI Resume Ranker analyzes resumes against a given job description and produces:
 - Keyword relevance score
 - **Structured reasoning** explaining strengths, weaknesses, and missing skills
 
-The goal is **not just ranking** — but clearly explaining **why** a candidate received that score.
+The goal is **not just ranking** , but clearly explaining **why** a candidate received that score.
 
 ## Architecture & Final Score Formula
 
@@ -66,11 +66,11 @@ cd ai-resume-ranker
 ``` bash
 python -m venv venv
 ```
-# Linux/macOS
+Linux/macOS
 ``` bash
 source venv/bin/activate
 ```
-# Windows
+Windows
 ``` bash
 venv\Scripts\activate
 ```
@@ -92,8 +92,9 @@ uvicorn app.main:app --reload
 streamlit run streamlit_app.py
 ```
 Open http://localhost:8501
-Limitations
 
+
+Limitations
 Experience extraction based on “X years” patterns has been disabled
 LLM skill extraction may vary slightly between runs
 Not intended for production hiring decisions without human validation
