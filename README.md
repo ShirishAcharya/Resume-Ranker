@@ -39,7 +39,7 @@ Transparent, fully explainable scoring breakdown
 Beautiful Streamlit frontend for quick testing
 Clean, modular FastAPI backend
 
-🛠️ Tech Stack
+Tech Stack
 Backend
 
 FastAPI
