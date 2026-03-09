@@ -51,7 +51,7 @@ ai-resume-ranker/
 │                  ├── skills.py    
 │                  ├── embedding.py       
 │                  ├── parser.py
-│   ├── routes.py                 
+│      ├── routes.py                 
 ├── streamlit_app.py        # Streamlit frontend
 ├── main.py                 # FastAPI entrypoint
 ├── schemas.py
@@ -71,19 +71,21 @@ cd ai-resume-ranker
 ``` bash
 python -m venv venv
 ```
+**Linux/macOS**
 ``` bash
-Linux/macOS
 source venv/bin/activate
 ```
+**Windows**
 ``` bash
-Windows
 venv\Scripts\activate
 ```
 3. Install dependencies
 ``` bash
 pip install -r requirements.txt
 ```
-4. Add your API key
+4. Get your API key from openrouter or any other service you might prefer
+
+
 Create a .env file with this content:
 ```
 OPENROUTER_API_KEY=sk-or-XXXXXXXXXXXXXXXX
@@ -99,14 +101,23 @@ streamlit run streamlit_app.py
 Open http://localhost:8501
 
 
-Limitations
+## Limitations
 
 
 Experience extraction based on “X years” patterns has been disabled
+
+
 LLM skill extraction may vary slightly between runs
+
+
 Not intended for production hiring decisions without human validation
+
+
 No bias mitigation layer yet
 
-Why This Project
+## Why This Project
+
 Most ATS tools give a score with zero explanation.
+
+
 This system focuses on transparency, explainability, and structured reasoning.
