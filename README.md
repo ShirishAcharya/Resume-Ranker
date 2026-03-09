@@ -39,23 +39,6 @@ Transparent, fully explainable scoring breakdown
 Beautiful Streamlit frontend for quick testing
 Clean, modular FastAPI backend
 
-Tech Stack
-Backend
-
-FastAPI
-OpenRouter (LLaMA 3)
-sentence-transformers
-scikit-learn
-
-Frontend
-
-Streamlit
-
-Other
-
-Python 3.10+
-PDF parsing utilities
-
 Project Structure
 ```bash
 ai-resume-ranker/
