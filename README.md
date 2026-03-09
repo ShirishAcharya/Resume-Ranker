@@ -59,7 +59,7 @@ ai-resume-ranker/
 How to Run
 1. Clone the repository
 ``` bash
-git clone https://github.com/yourusername/ai-resume-ranker.git
+git clone https://github.com/ShirishAcharya/ai-resume-ranker.git
 cd ai-resume-ranker
 ```
 2. Create virtual environment
@@ -95,6 +95,8 @@ Open http://localhost:8501
 
 
 Limitations
+
+
 Experience extraction based on “X years” patterns has been disabled
 LLM skill extraction may vary slightly between runs
 Not intended for production hiring decisions without human validation
