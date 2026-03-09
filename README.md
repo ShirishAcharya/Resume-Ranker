@@ -30,33 +30,38 @@ final_score = (
 )
 ```
 This weighted combination ensures both deep contextual understanding and precise requirement matching.
-Features
 
-Resume ranking against any custom job description
-Detailed structured reasoning for every candidate
-Weighted skill extraction powered by LLM
-Transparent, fully explainable scoring breakdown
-Beautiful Streamlit frontend for quick testing
-Clean, modular FastAPI backend
 
-Project Structure
+## Features
+
+- Resume ranking against any custom job description
+- Detailed structured reasoning for every candidate
+- Weighted skill extraction powered by LLM
+- Transparent, fully explainable scoring breakdown
+- Beautiful Streamlit frontend for quick testing
+- Clean, modular FastAPI backend
+
+## Project Structure
 ```bash
 ai-resume-ranker/
 ├── app/
-│   ├── llm.py              # LLM integration (OpenRouter)
-│   ├── scoring.py          # Final score computation
-│   ├── skill_scoring.py    # Skill-based scoring logic
-│   ├── embedding.py        # Semantic similarity
-│   ├── keyword.py          # Keyword scoring
-│   ├── explain.py          # Structured reasoning builder
-│   └── main.py             # FastAPI entrypoint
+│      ├── services/
+│                  ├── llm.py 
+│                  ├── ranking.py          
+│                  ├── skills.py    
+│                  ├── embedding.py       
+│                  ├── parser.py
+│   ├── routes.py                 
 ├── streamlit_app.py        # Streamlit frontend
+├── main.py                 # FastAPI entrypoint
+├── schemas.py
 ├── requirements.txt
-├── .env.example
+├── .gitignore
+├── .env
 └── README.md
 ```
 
-How to Run
+## How to Run
 1. Clone the repository
 ``` bash
 git clone https://github.com/ShirishAcharya/ai-resume-ranker.git
@@ -66,12 +71,12 @@ cd ai-resume-ranker
 ``` bash
 python -m venv venv
 ```
-Linux/macOS
 ``` bash
+Linux/macOS
 source venv/bin/activate
 ```
-Windows
 ``` bash
+Windows
 venv\Scripts\activate
 ```
 3. Install dependencies
