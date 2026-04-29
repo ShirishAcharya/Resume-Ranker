@@ -1,26 +1,28 @@
-# AI Resume Ranker
+# Resume Ranker
 
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB.svg?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688.svg?logo=fastapi&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B.svg?logo=streamlit&logoColor=white)
 
-**An AI-powered resume ranking system** that evaluates candidates against a job description using a **hybrid scoring engine** combining semantic similarity, structured skill weighting, and keyword relevance.
+An AI-powered resume ranking system that evaluates candidates against a job description using a hybrid scoring engine — combining semantic similarity, structured skill weighting, and keyword relevance.
 
-This project is a **transparent and explainable** alternative to black-box ATS systems.
+Built as a transparent alternative to black-box ATS systems, where candidates actually get to see *why* they ranked where they did.
 
 ## Overview
 
-AI Resume Ranker analyzes resumes against a given job description and produces:
+Resume Ranker takes a job description and a set of resumes, then produces:
 
-- A **final candidate score** (0–100)
+- A **final candidate score** (0–1)
 - Semantic similarity score
 - Skill match score
 - Keyword relevance score
-- **Structured reasoning** explaining strengths, weaknesses, and missing skills
+- Candidate name extracted from the resume
+- Matched skills list
+- Structured reasoning covering strengths, weaknesses, and missing skills (for top candidates)
 
-The goal is **not just ranking** , but clearly explaining **why** a candidate received that score.
+The goal isn't just to rank — it's to explain the ranking in a way that's actually useful.
 
-## Architecture & Final Score Formula
+## Scoring Formula
 
 ```python
 final_score = (
@@ -29,32 +31,34 @@ final_score = (
     0.15 * keyword_score
 )
 ```
-This weighted combination ensures both deep contextual understanding and precise requirement matching.
 
+Semantic similarity carries the most weight since it captures contextual fit beyond just keyword matching. Skill score uses LLM-extracted weighted skills from the job description, so it adapts to any role — not just engineering. Keyword score acts as a lightweight tiebreaker.
 
 ## Features
 
-- Resume ranking against any custom job description
-- Detailed structured reasoning for every candidate
-- Weighted skill extraction powered by LLM
-- Transparent, fully explainable scoring breakdown
-- Beautiful Streamlit frontend for quick testing
-- Clean, modular FastAPI backend
+- Works with any job description — not hardcoded to a specific domain
+- Extracts candidate names automatically from uploaded resumes
+- Shows which skills from the JD were matched in each resume
+- LLM-generated structured reasoning for top-ranked candidates
+- Fully explainable scoring breakdown
+- Streamlit frontend for quick testing
+- Modular FastAPI backend
 
 ## Project Structure
+
 ```bash
 ai-resume-ranker/
 ├── app/
-│      ├── services/
-│                  ├── llm.py 
-│                  ├── ranking.py          
-│                  ├── skills.py    
-│                  ├── embedding.py       
-│                  ├── parser.py
-│      ├── routes.py                 
+│   ├── services/
+│   │   ├── llm.py          # Skill extraction and reasoning via LLM
+│   │   ├── ranking.py      # Core scoring logic
+│   │   ├── skills.py       # Skill matching utilities
+│   │   ├── embedding.py    # Sentence embeddings and cosine similarity
+│   │   └── parser.py       # PDF and DOCX parsing + name extraction
+│   └── routes.py           # FastAPI route definitions
 ├── streamlit_app.py        # Streamlit frontend
 ├── main.py                 # FastAPI entrypoint
-├── schemas.py
+├── schemas.py              # Pydantic models
 ├── requirements.txt
 ├── .gitignore
 ├── .env
@@ -62,62 +66,64 @@ ai-resume-ranker/
 ```
 
 ## How to Run
+
 1. Clone the repository
-``` bash
+
+```bash
 git clone https://github.com/ShirishAcharya/ai-resume-ranker.git
 cd ai-resume-ranker
 ```
-2. Create virtual environment
-``` bash
+
+2. Create and activate a virtual environment
+
+```bash
 python -m venv venv
 ```
-**Linux/macOS**
-``` bash
+
+Linux/macOS
+```bash
 source venv/bin/activate
 ```
-**Windows**
-``` bash
+
+Windows
+```bash
 venv\Scripts\activate
 ```
+
 3. Install dependencies
-``` bash
+
+```bash
 pip install -r requirements.txt
 ```
-4. Get your API key from openrouter or any other service you might prefer
 
+4. Set up your API key
 
-Create a .env file with this content:
+Get a free key from [OpenRouter](https://openrouter.ai) and create a `.env` file:
+
 ```
 OPENROUTER_API_KEY=sk-or-XXXXXXXXXXXXXXXX
 ```
-5. Run backend
-``` bash
-uvicorn app.main:app --reload
+5. Run the backend
+
+```bash
+uvicorn main:app --reload
 ```
-6. Run frontend (in a new terminal)
-``` bash
+
+6. Run the frontend (in a separate terminal)
+
+```bash
 streamlit run streamlit_app.py
 ```
-Open http://localhost:8501
 
+Then open http://localhost:8501
 
 ## Limitations
 
-
-Experience extraction based on “X years” patterns has been disabled
-
-
-LLM skill extraction may vary slightly between runs
-
-
-Not intended for production hiring decisions without human validation
-
-
-No bias mitigation layer yet
+- Name extraction relies on the first line of the resume being the candidate's name, which is true for most standard formats but may not always hold
+- LLM skill extraction can vary slightly between runs due to model temperature
+- Not intended for production hiring decisions without human review
+- No bias mitigation layer
 
 ## Why This Project
 
-Most ATS tools give a score with zero explanation.
-
-
-This system focuses on transparency, explainability, and structured reasoning.
+Most ATS tools hand you a score and call it a day. This project started from the frustration of not knowing *why* a resume got ranked the way it did — so the focus here was always on transparency and structured reasoning over just the number.

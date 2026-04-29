@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.routes import router
 
-app = FastAPI(title = "Resume Ranker using AI")
+app = FastAPI(title = "Resume Ranker")
 
 app.include_router(router)
 

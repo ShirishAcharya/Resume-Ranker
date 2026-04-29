@@ -10,67 +10,73 @@ client = OpenAI(
     base_url="https://openrouter.ai/api/v1"
 )
 
-MODEL="meta-llama/llama-3-8b-instruct"
+MODEL = "meta-llama/llama-3-8b-instruct"
+
 
 def extract_weighted_skills(job_description: str) -> dict:
     prompt = f"""
-                Extract the top backend engineering skills from the job description below.
+You are a technical recruiter. Extract the most important skills and qualifications 
+from the job description below.
 
-                Return ONLY a valid JSON dictionary.
-                Do not include explanation.
-                Do not include markdown.
-                Do not include backticks.
+Return ONLY a valid JSON dictionary where:
+- Keys are skill names (e.g. "Python", "React", "Project Management")
+- Values are importance weights between 0.0 and 1.0 (1.0 = absolutely critical)
 
-                Format:
-                {{
-                "Python": 0.9,
-                "FastAPI": 0.8
-                }}
+Rules:
+- Do NOT include markdown, backticks, or explanation
+- Do NOT assume a specific domain — derive everything from the job description
+- Include both technical and soft skills if mentioned
+- Return between 5 and 15 skills
 
-                Weights must be between 0 and 1.
+Example format:
+{{"Python": 0.9, "REST APIs": 0.8, "Communication": 0.5}}
 
-                Job Description:
-                {job_description}
-            """
-
+Job Description:
+{job_description}
+"""
     response = client.chat.completions.create(
         model=MODEL,
         messages=[{"role": "user", "content": prompt}],
         temperature=0
     )
-
     content = response.choices[0].message.content.strip()
 
+    if content.startswith("```"):
+        content = content.split("```")[1]
+        if content.startswith("json"):
+            content = content[4:]
+        content = content.strip()
+
     try:
-        return json.loads(content)
-    except:
+        skills = json.loads(content)
+        return {
+            k: max(0.0, min(1.0, float(v)))
+            for k, v in skills.items()
+            if isinstance(k, str)
+        }
+    except (json.JSONDecodeError, ValueError):
         return {}
-    
 
-def generate_reasoning(job_description: str, resume_text: str):
+def generate_reasoning(job_description: str, resume_text: str) -> str:
     prompt = f"""
-                You are a hiring assistant.
+You are a hiring assistant. Evaluate this candidate against the job description.
+Be concise and specific. Keep your response under 120 words.
 
-                Explain briefly why this candidate is a good or weak fit.
-                Mention missing critical skills if any.
-                Keep under 120 words.
+Always use exactly this format:
+- Candidate Fit: (overall fit in one sentence)
+- Strengths: (what the candidate does well for this role)
+- Weaknesses: (gaps or concerns)
+- Missing Critical Skills: (skills in the JD that are absent from the resume, or "None")
 
-                Job Description:
-                {job_description}
+Job Description:
+{job_description}
 
-                Resume:
-                {resume_text[:3000]}
-
-                Always format reasoning as:
-                - Candidate Fit:
-                - Strengths:
-                - Weaknesses:
-                - Missing Critical Skills:
-                            """
+Resume:
+{resume_text[:3000]}
+"""
     response = client.chat.completions.create(
         model=MODEL,
         messages=[{"role": "user", "content": prompt}],
         temperature=0.2
     )
-
     return response.choices[0].message.content.strip()

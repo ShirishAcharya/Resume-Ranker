@@ -1,50 +1,48 @@
 from app.services.embedding import get_embedding, cosine_similarity
 from app.services.llm import extract_weighted_skills, generate_reasoning
-from app.services.skills import compute_skill_score
+from app.services.skills import compute_skill_score, get_matched_skills
 
 SEMANTIC_WEIGHT = 0.5
 SKILL_WEIGHT = 0.35
 KEYWORD_WEIGHT = 0.15
 
-def compute_keyword_score(resume_text: str, job_description: str):
+
+def compute_keyword_score(resume_text: str, job_description: str) -> float:
     jd_keywords = set(job_description.lower().split())
     resume_words = set(resume_text.lower().split())
-
     if not jd_keywords:
         return 0.0
-
     hits = len(jd_keywords.intersection(resume_words))
     return hits / len(jd_keywords)
 
 
-def rank_resumes(job_description: str, resumes: list[str], explain_top_n: int = 3):
-
+def rank_resumes(job_description: str, resumes: list[tuple[str, str]], explain_top_n: int = 3):
+    """
+    resumes: list of (name, text) tuples
+    """
     weighted_skills = extract_weighted_skills(job_description)
     jd_embedding = get_embedding(job_description)
 
     results = []
-
-    for resume in resumes:
-        semantic_score = cosine_similarity(
-            jd_embedding,
-            get_embedding(resume)
-        )
-
+    for name, resume in resumes:
+        semantic_score = cosine_similarity(jd_embedding, get_embedding(resume))
         skill_score = compute_skill_score(resume, weighted_skills)
         keyword_score = compute_keyword_score(resume, job_description)
+        matched_skills = get_matched_skills(resume, weighted_skills)
 
         final_score = (
             semantic_score * SEMANTIC_WEIGHT +
             skill_score * SKILL_WEIGHT +
-            keyword_score * KEYWORD_WEIGHT 
+            keyword_score * KEYWORD_WEIGHT
         )
-
         results.append({
+            "name": name,
             "resume": resume,
             "final_score": final_score,
             "semantic_score": semantic_score,
             "skill_score": skill_score,
             "keyword_score": keyword_score,
+            "matched_skills": matched_skills,
             "reasoning": None
         })
 
@@ -52,8 +50,7 @@ def rank_resumes(job_description: str, resumes: list[str], explain_top_n: int = 
 
     for i in range(min(explain_top_n, len(results))):
         results[i]["reasoning"] = generate_reasoning(
-            job_description,
-            results[i]["resume"]
+            job_description, results[i]["resume"]
         )
 
     return results
