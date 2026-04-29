@@ -47,7 +47,7 @@ Semantic similarity carries the most weight since it captures contextual fit bey
 ## Project Structure
 
 ```bash
-ai-resume-ranker/
+resume-ranker/
 ├── app/
 │   ├── services/
 │   │   ├── llm.py          # Skill extraction and reasoning via LLM
