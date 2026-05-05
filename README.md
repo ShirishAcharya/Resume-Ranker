@@ -20,7 +20,7 @@ Resume Ranker takes a job description and a set of resumes, then produces:
 - Matched skills list
 - Structured reasoning covering strengths, weaknesses, and missing skills (for top candidates)
 
-The goal isn't just to rank — it's to explain the ranking in a way that's actually useful.
+The goal isn't just to rank, it's to explain the ranking in a way that's actually useful.
 
 ## Scoring Formula
 
