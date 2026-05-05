@@ -4,7 +4,7 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688.svg?logo=fastapi&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B.svg?logo=streamlit&logoColor=white)
 
-An AI-powered resume ranking system that evaluates candidates against a job description using a hybrid scoring engine — combining semantic similarity, structured skill weighting, and keyword relevance.
+An AI-powered resume ranking system that evaluates candidates against a job description using a hybrid scoring engine, combining semantic similarity, structured skill weighting, and keyword relevance.
 
 Built as a transparent alternative to black-box ATS systems, where candidates actually get to see *why* they ranked where they did.
 
@@ -134,4 +134,4 @@ Then open http://localhost:8501
 
 ## Why This Project
 
-Most ATS tools hand you a score and call it a day. This project started from the frustration of not knowing *why* a resume got ranked the way it did — so the focus here was always on transparency and structured reasoning over just the number.
+Most ATS tools hand you a score and call it a day. This project started from the frustration of not knowing *why* a resume got ranked the way it did, so the focus here was always on transparency and structured reasoning over just the number.
