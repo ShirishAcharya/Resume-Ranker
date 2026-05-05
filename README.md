@@ -34,6 +34,14 @@ final_score = (
 
 Semantic similarity carries the most weight since it captures contextual fit beyond just keyword matching. Skill score uses LLM-extracted weighted skills from the job description, so it adapts to any role — not just engineering. Keyword score acts as a lightweight tiebreaker.
 
+## Demo
+
+
+
+https://github.com/user-attachments/assets/76d29641-7321-47cb-9b9d-9bbf1bf89ae6
+
+
+
 ## Features
 
 - Works with any job description — not hardcoded to a specific domain
